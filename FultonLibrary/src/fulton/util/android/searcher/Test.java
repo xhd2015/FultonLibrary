@@ -9,14 +9,10 @@ public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String word="doyou";
-		String type="zhihu";
-		
-		
-		
+		String word="kmp";
+		String type="askubuntu";
 		String url = ContentManager.getUrl(word, type);
 		Document docu = ContentManager.getDocument(url);
-		ContentManager.saveAsFile("C:\\Users\\acer\\Desktop\\zhihu.html", docu.toString());
+		ContentManager.saveAsFile("C:\\Users\\sz\\Desktop\\askubuntu.html", docu.toString());
 	}
-
 }

@@ -16,10 +16,10 @@ public class ZhihuProcessor implements ContentProcessor {
 		ArrayList<HashMap<String,String>> res=new ArrayList<HashMap<String,String>>();
 		HashMap<String,String> one=null;
 		
-		Elements base=doc.select(".list contents navigable").select(".item clearfix");
+		Elements base=doc.select(".contents");
 		Elements title=base.select(".title").select("a");
 		Elements href=base.select(".title").select("a");
-		Elements brief=base.select(".compText").not(".fl-l");
+		Elements brief=base.select(".summary");
 		
 		for(int i=0;i!=title.size();i++)
 		{
