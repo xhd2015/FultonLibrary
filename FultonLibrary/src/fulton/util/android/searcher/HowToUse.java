@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HowToUse {
-	public static void processYahoo()
+	public static void main(String...args)
 	{	
 		String word="doyou";
 		String type="yahoo";
