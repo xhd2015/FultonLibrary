@@ -1,0 +1,27 @@
+String currentUrl=“http://www.myWeb.com/login.jsp?userName='Devin'&passWord='mypassword'”; //URL ?后面的内容为HTTP请求的正文
+URL url = new URL(currentUrl);
+ 
+HttpURLConnection httpurlconnection = url.openConnection();
+//下面的设置对应HTTP请求中的消息报头
+httpurlconnection.setRequestProperty("User-Agent",CommonValues.User_Agent);
+httpurlconnection.setRequestProperty("Accept",CommonValues.Accept);
+httpurlconnection.setRequestProperty("Accept-Charset",CommonValues.Accept_Charset);
+httpurlconnection.setRequestProperty("Accept-Language",CommonValues.Accept_Language);
+httpurlconnection.setRequestProperty("Connection",CommonValues.Connection);
+httpurlconnection.setRequestProperty("Keep-Alive",CommonValues.Keep_Alive);
+httpurlconnection.setConnectTimeout(CommonValues.ConnectionTimeOut);
+httpurlconnection.setReadTimeout(CommonValues.ReadTimeOut);
+             
+httpurlconnection.connect();
+            
+int responsecode = httpurlconnection.getResponseCode();
+             
+if(responsecode == HttpURLConnection.HTTP_OK) //对应HTTP响应中状态行的响应码
+{
+　　//操作请求流，这里对应HTTP响应中的响应正文
+}
+             
+if (httpurlconnection != null) 
+{
+   httpurlconnection.disconnect();
+}
