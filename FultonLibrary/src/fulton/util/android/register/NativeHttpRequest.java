@@ -19,17 +19,26 @@ import java.util.Map.Entry;
  *
  */
 public class NativeHttpRequest implements HttpRequest {
-	public static final String POST="post";
+	public static final String VALUE_UA="Mozilla/5.0 (FultonRequester)";
 	private HashMap<String, String> defaultHeaders;
 	private boolean defaultEnabled=true;
 	private int timeoutConn=1000;
 	private int timeoutRead=1000;
 	private String encoding="UTF-8";
+	private Class<? extends HttpResponse> responseTemplate=NativeHttpResponse.class;
 	
+	
+	public Class<? extends HttpResponse> getResponseTemplate() {
+		return responseTemplate;
+	}
+	public void setResponseTemplate(Class<? extends HttpResponse> responseTemplate) {
+		this.responseTemplate = responseTemplate;
+	}
 	public NativeHttpRequest() {
 		// TODO Auto-generated constructor stub
 		defaultHeaders=new HashMap<>();
 		defaultHeaders.put("charset", "text/html; UTF-8");
+		this.setHeader(KEY_UA,VALUE_UA);
 	}
 	@Override
 	public HttpResponse request(String url, String method, HashMap<String, String> headers, String data) {
@@ -48,10 +57,12 @@ public class NativeHttpRequest implements HttpRequest {
 					conn.setRequestProperty(obj.getKey(),obj.getValue());
 				}
 			}
-			
-			for(Entry<String, String> obj:headers.entrySet())
+			if(headers!=null)
 			{
-				conn.setRequestProperty(obj.getKey(),obj.getValue());
+				for(Entry<String, String> obj:headers.entrySet())
+				{
+					conn.setRequestProperty(obj.getKey(),obj.getValue());
+				}
 			}
 			conn.setConnectTimeout(timeoutConn);
 			conn.setReadTimeout(timeoutRead);
@@ -67,12 +78,22 @@ public class NativeHttpRequest implements HttpRequest {
 			}
 			
 			
-			HttpResponse response=new HttpResponse();
-			response.setStatus(conn.getResponseCode());
+			HttpResponse response;
+			try {
+				response = responseTemplate.newInstance();
+				response.fromRaw(conn);
+				return response;
+			} catch (InstantiationException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) { /*fromRaw error,this should never happen*/
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
-			
-			return response;
+			//This should never happen
+			return null;
 	
 			
 		} catch (MalformedURLException e) {
@@ -89,25 +110,13 @@ public class NativeHttpRequest implements HttpRequest {
 	@Override
 	public HttpResponse get(String url, HashMap<String, String> headers) {
 		// TODO Auto-generated method stub
-		return null;
+		return request(url,GET, headers,null);
 	}
 
 	@Override
 	public HttpResponse post(String url, HashMap<String, String> headers, String data) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setHeaders(HashMap<String, String> headers) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setHeader(String key, String value) {
-		// TODO Auto-generated method stub
-
+		return request(url, POST, headers, data);
 	}
 
 	@Override
@@ -157,10 +166,30 @@ public class NativeHttpRequest implements HttpRequest {
 	@Override
 	public void setHeader(String key, String value) {
 		// TODO Auto-generated method stub
-		
+		if(value==null)
+		{
+			defaultHeaders.remove(key.toLowerCase());
+		}else{
+			defaultHeaders.put(key.toLowerCase(), value);
+		}
 	}
 	@Override
 	public void setEncoding(String encoding) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public HttpResponse get(String url) {
+		// TODO Auto-generated method stub
+		return get(url,null);
+	}
+	@Override
+	public HttpResponse post(String url, String data) {
+		// TODO Auto-generated method stub
+		return post(url, null,data);
+	}
+	@Override
+	public void setUserAgent(String ua) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,47 +1,22 @@
 package fulton.util.android.register;
 
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
+import java.awt.print.Printable;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import javax.net.ssl.HttpsURLConnection;
 
-public class HttpResponse {
-	private int status;
-	private String cookie;
-	private Map<String, List<String>> headers;
-	private String body;
+public interface HttpResponse {
+	public static final String KEY_COOKIE="Set-Cookie";
+	public int getStatus();
 	
-	public HttpResponse()
-	{
-		
-	}
-	public HttpResponse(Map<String, List<String>> headers)
-	{
-		this.headers=headers;
-	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	public HashMap<String, String> getHeaders() {
-		return headers;
-	}
-	public void setHeaders(HashMap<String, String> headers) {
-		this.headers = headers;
-	}
-	public String getBody() {
-		return body;
-	}
-	public void setBody(String body) {
-		this.body = body;
-	}
-	public static HttpResponse fromRaw(HttpsURLConnection conn)
-	{
-		HttpResponse resp=new HttpResponse();
-		
-		return resp;
-	}
+	public Map<String, List<String>> getHeaders();
+	public List<String> getFullHeader(String key);
+	public String getHeader(String key);
+	
+	public void fromRaw(HttpURLConnection conn) throws Exception;	
 }
