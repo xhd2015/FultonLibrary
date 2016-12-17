@@ -1,4 +1,4 @@
-package fulton.util.android.searcher;
+package fulton.util.net.searcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;

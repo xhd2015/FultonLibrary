@@ -1,4 +1,4 @@
-package fulton.util.android.searcher.processors;
+package fulton.util.net.searcher.processors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.HashMap;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import fulton.util.android.searcher.ContentProcessor;
+import fulton.util.net.searcher.ContentProcessor;
 
-public class StackOverflowProcessor implements ContentProcessor {
+public class AskubuntuProcessor implements ContentProcessor {
 
 	@Override
 	public ArrayList<HashMap<String, String>> process(Document doc) {
@@ -20,12 +20,17 @@ public class StackOverflowProcessor implements ContentProcessor {
 		Elements title=base.select(".result-link").select("a");
 		Elements href=base.select(".result-link").select("a");
 		Elements brief=base.select(".excerpt");
-		
+		String temp;
 		for(int i=0;i!=title.size();i++)
 		{
 			one=new HashMap<String,String>();
 			one.put("title",title.get(i).text());
-			one.put("url",href.get(i).attr("href"));
+			temp=href.get(i).attr("href");
+			if(!temp.startsWith("http"))
+			{
+				temp=getDomain()+temp;
+			}
+			one.put("url",temp);
 			one.put("brief",brief.get(i).text());
 			res.add(one);
 		}
@@ -34,21 +39,27 @@ public class StackOverflowProcessor implements ContentProcessor {
 	}
 
 	@Override
-	public String getBaseUrl() {
+	public String getName() {
 		// TODO Auto-generated method stub
-		return "http://stackoverflow.com/search";
+		return "askubuntu";
 	}
 
 	@Override
-	public String getName() {
+	public String getBaseUrl() {
 		// TODO Auto-generated method stub
-		return "stackoverflow";
+		return "http://askubuntu.com/search";
 	}
-
 
 	@Override
 	public String getParameterFormater() {
 		// TODO Auto-generated method stub
 		return "q=%s";
 	}
+
+	@Override
+	public String getDomain() {
+		// TODO Auto-generated method stub
+		return "http://askubuntu.com";
+	}
+
 }

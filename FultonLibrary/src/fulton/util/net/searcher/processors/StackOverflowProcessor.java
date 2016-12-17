@@ -1,4 +1,4 @@
-package fulton.util.android.searcher.processors;
+package fulton.util.net.searcher.processors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.HashMap;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import fulton.util.android.searcher.ContentProcessor;
+import fulton.util.net.searcher.ContentProcessor;
 
-public class BaiduZhidaoProcessor implements ContentProcessor {
+public class StackOverflowProcessor implements ContentProcessor {
 
 	@Override
 	public ArrayList<HashMap<String, String>> process(Document doc) {
@@ -16,16 +16,21 @@ public class BaiduZhidaoProcessor implements ContentProcessor {
 		ArrayList<HashMap<String,String>> res=new ArrayList<HashMap<String,String>>();
 		HashMap<String,String> one=null;
 		
-		Elements base=doc.select("#wgt-list");
-		Elements title=base.select(".mb-4").select("a");
-		Elements href=base.select(".mb-4").select("a");
-		Elements brief=base.select(".answer");
-		
+		Elements base=doc.select(".search-results");
+		Elements title=base.select(".result-link").select("a");
+		Elements href=base.select(".result-link").select("a");
+		Elements brief=base.select(".excerpt");
+		String temp;
 		for(int i=0;i!=title.size();i++)
 		{
 			one=new HashMap<String,String>();
 			one.put("title",title.get(i).text());
-			one.put("url",href.get(i).attr("href"));
+			temp=href.get(i).attr("href");
+			if(!temp.startsWith("http"))
+			{
+				temp=getDomain()+temp;
+			}
+			one.put("url",temp);
 			one.put("brief",brief.get(i).text());
 			res.add(one);
 		}
@@ -34,21 +39,25 @@ public class BaiduZhidaoProcessor implements ContentProcessor {
 	}
 
 	@Override
-	public String getName() {
+	public String getBaseUrl() {
 		// TODO Auto-generated method stub
-		return "baiduzhidao";
+		return "http://stackoverflow.com/search";
+	}
+	
+	public String getDomain(){
+		return "http://stackoverflow.com";
 	}
 
 	@Override
-	public String getBaseUrl() {
+	public String getName() {
 		// TODO Auto-generated method stub
-		return "http://zhidao.baidu.com/search";
+		return "stackoverflow";
 	}
+
 
 	@Override
 	public String getParameterFormater() {
 		// TODO Auto-generated method stub
-		return "lm=0&rn=10&pn=0&fr=search&ie=gbk&word=%s";
+		return "q=%s";
 	}
-
 }

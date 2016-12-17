@@ -1,4 +1,4 @@
-package fulton.util.android.searcher;
+package fulton.util.net.searcher;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,28 +12,35 @@ import java.util.HashMap;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import fulton.util.android.searcher.processors.AskubuntuProcessor;
-import fulton.util.android.searcher.processors.BaiduZhidaoProcessor;
-import fulton.util.android.searcher.processors.GuokrProcessor;
-import fulton.util.android.searcher.processors.StackOverflowProcessor;
-import fulton.util.android.searcher.processors.YahooProcessor;
-import fulton.util.android.searcher.processors.ZhihuProcessor;
+import fulton.util.net.searcher.processors.AskubuntuProcessor;
+import fulton.util.net.searcher.processors.BaiduZhidaoProcessor;
+import fulton.util.net.searcher.processors.GuokrProcessor;
+import fulton.util.net.searcher.processors.StackOverflowProcessor;
+import fulton.util.net.searcher.processors.YahooProcessor;
+import fulton.util.net.searcher.processors.ZhihuProcessor;
 
 public class ContentManager {
 	static String userAgent="Mozilla/5.0 (JSoup)";
 	static String encoding="UTF8";
 	public static HashMap<String, Class> mapper; 
 	public static HashMap<String, ContentProcessor> pool;
+	public static final String 
+			YAHOO="yahoo",
+			STACKOVERFLOW="stackoverflow",
+			BAIDUZHIDAO="baiduzhidao",
+			ASKUBUNTU="askubuntu",
+			GUOKR="guokr",
+			ZHIHU="zhihu";
 	
 	static{
 		pool=new HashMap<>();
 		mapper=new HashMap<>();
-		mapper.put("yahoo", YahooProcessor.class);
-		mapper.put("stackoverflow", StackOverflowProcessor.class);
-		mapper.put("baiduzhidao",BaiduZhidaoProcessor.class);
-		mapper.put("askubuntu", AskubuntuProcessor.class);
-		mapper.put("guokr", GuokrProcessor.class);
-		mapper.put("zhihu", ZhihuProcessor.class);
+		mapper.put(YAHOO, YahooProcessor.class);
+		mapper.put(STACKOVERFLOW, StackOverflowProcessor.class);
+		mapper.put(BAIDUZHIDAO,BaiduZhidaoProcessor.class);
+		mapper.put(ASKUBUNTU, AskubuntuProcessor.class);
+		mapper.put(GUOKR, GuokrProcessor.class);
+		mapper.put(ZHIHU, ZhihuProcessor.class);
 	}
 	public static ContentProcessor getProcessor(String type)
 	{

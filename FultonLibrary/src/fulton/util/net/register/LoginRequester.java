@@ -1,6 +1,8 @@
-package fulton.util.android.register;
+package fulton.util.net.register;
 
 import java.util.HashMap;
+
+import fulton.util.net.HttpRequest;
 /**
  * A host has its corresponding login manager
  * 
@@ -19,11 +21,18 @@ import java.util.HashMap;
  * be included in the next Request Headers.So use HashMap to 
  * Keep it.
  * 
+ * Besides,
+ * 		This request(url...), url can be partial.If url doesn't starts
+ * 	 with a valid domain,then just add it.Or not.
+ * 
+ * Still,
+ * 		Lot of work to do.
+ * 
  * @author Douglas
  *
  */
 
-public interface LoginManager {
+public interface LoginRequester extends HttpRequest{
 	
 	/**
 	 * This sends a message to the host and wait for its response.
@@ -41,6 +50,8 @@ public interface LoginManager {
 	 */
 	public boolean login();
 	
+	
+	
 	/**
 	 * send logout request
 	 */
@@ -51,15 +62,6 @@ public interface LoginManager {
 	public String getPassword();
 	
 	public String getHost();
-	
-	/**
-	 * Send a request with the status login or not.
-	 * 
-	 * @param requester
-	 * @return
-	 */
-	public HttpResponse doRequest(HttpRequest requester);
-	
 	
 	
 }

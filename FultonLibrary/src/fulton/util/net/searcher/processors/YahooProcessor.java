@@ -1,4 +1,4 @@
-package fulton.util.android.searcher.processors;
+package fulton.util.net.searcher.processors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import fulton.util.android.searcher.ContentProcessor;
+import fulton.util.net.searcher.ContentProcessor;
 
 public class YahooProcessor implements ContentProcessor {
 
@@ -51,6 +51,13 @@ public class YahooProcessor implements ContentProcessor {
 		// TODO Auto-generated method stub
 		return "p=%s&fr2=sb-top-answers.search&fr=uh3_answers_vert_gs&type=2button";
 		
+	}
+
+
+	@Override
+	public String getDomain() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

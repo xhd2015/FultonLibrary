@@ -1,4 +1,4 @@
-package fulton.util.android.searcher;
+package fulton.util.net.searcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,8 +6,8 @@ import java.util.HashMap;
 public class HowToUse {
 	public static void main(String...args)
 	{	
-		String word="doyou";
-		String type="yahoo";
+		String word="c";
+		String type="guokr";
 		
 		ArrayList<HashMap<String,String>> res=ContentManager.searchFor(word, type);
 		
